@@ -1,7 +1,7 @@
 
 import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, listOfEmployees } from "../data.js";
 
-console.log('Reduce in the works');
+console.log('Reduce is alive');
 
 export default async () => {
 
