@@ -1,7 +1,7 @@
 
 import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, listOfEmployees } from "../data.js";
 
-
+console.log('Reduce in the works');
 
 export default async () => {
 
