@@ -1,4 +1,4 @@
-console.log('App Runing...');
+console.log('App Runing Alive...');
 import dotenv from 'dotenv'
 import helpers from "./Scripts/helperFunctions.js";
 import connectDB from "./dbs.js";
