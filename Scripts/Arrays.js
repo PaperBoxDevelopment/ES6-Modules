@@ -10,65 +10,91 @@ export default () => {
 
 
     /*
+      
+
+
+    1. Array Modification Methods:
+        --- These methods MODIFY the original array
+
+        push()       Adds one or more elements to the end of an array and returns the new length of the array.
+        pop()        Removes the last element from an array and returns it.
+        shift()      Removes the first element from an array and returns it.
+        unshift()    Adds one or more elements to the beginning of an array and returns the new length of the array.
+        splice()     Adds, removes, or replaces elements in an array.
+        copyWithin() Copies all or part of an array into another array, starting at a specified index.
+        fill()       Sets all or part of an array to a specified value.
+
+        --- Sort
+
+        reverse()   Reverses the order of the elements in an array.
+        sort()      Sorts the elements in an array in ascending or descending order.
+
+
+        --- Iterate
+
+        forEach()     Executes a function for each element in an array.
+
+
+
+
+    2. Array Accessor Methods:
+        ---These methods access elements or information from the array without modifying it.
+
+        length()         Returns the number of elements in the array.
+        concat()         Combines two or more arrays into a new array.
+        includes()       Returns true if an array contains a specified value, and false if it does not.
+        at()             Takes an integer value and returns the item at that index
+        indexOf()        Returns the index of the first occurrence of a specified value in an array, or -1 if the value is not found.
+        join()           Converts an array to a string by joining the elements with a specified separator.
+        lastIndexOf()    Returns the index of the last occurrence of a specified value in an array, or -1 if the value is not found.
+        slice()          Creates a new array that contains a section of the original array.
+        toString()       Converts an array to a string by joining the elements with a comma.
+        entries()        Returns an array of array-like objects, each of which contains the index and value of each element in the original array.
+        toLocaleString() Converts an array to a string using the locale-specific conventions of the current browser.
+
+
+
+    3. Array Iteration Methods:
+        ---These methods help iterate through the elements of an array.
     
-    --- The following methods return a new array:
-    
-    
-    concat(): Combines two or more arrays into a new array.
-    
-    copyWithin(): Copies all or part of an array into another array, starting at a specified index.
-    
-    entries(): Returns an array of array-like objects, each of which contains the index and value of each element in the original array.
-    
-    every(): Executes a function for each element in an array and returns true if the function returns true for all elements.
-    
-    fill(): Sets all or part of an array to a specified value.
-    
-    filter(): Creates a new array with all elements from the original array that pass a test function.
-    
-    find(): Returns the first element in an array that passes a test function, or undefined if no element passes the test.
-    
-    findIndex(): Returns the index of the first element in an array that passes a test function, or -1 if no element passes the test.
-    
-    forEach(): Executes a function for each element in an array.
-    
-    includes(): Returns true if an array contains a specified value, and false if it does not.
-    
-    indexOf(): Returns the index of the first occurrence of a specified value in an array, or -1 if the value is not found.
-    
-    join(): Converts an array to a string by joining the elements with a specified separator.
-    
-    lastIndexOf(): Returns the index of the last occurrence of a specified value in an array, or -1 if the value is not found.
-    
-    map(): Creates a new array with the results of calling a function for each element in the original array.
-    
-    pop(): Removes the last element from an array and returns it.
-    
-    push(): Adds one or more elements to the end of an array and returns the new length of the array.
-    
-    reduce(): Reduces an array to a single value by calling a function for each element and passing an accumulator as an argument.
-    
-    reduceRight(): Reduces an array to a single value by calling a function for each element in reverse order and passing an accumulator as an argument.
-    
-    reverse(): Reverses the order of the elements in an array.
-    
-    shift(): Removes the first element from an array and returns it.
-    
-    slice(): Creates a new array that contains a section of the original array.
-    
-    some(): Executes a function for each element in an array and returns true if the function returns true for at least one element.
-    
-    splice(): Adds, removes, or replaces elements in an array.
-    
-    sort(): Sorts the elements in an array in ascending or descending order.
-    
-    splice(): Adds, removes, or replaces elements in an array.
-    
-    toLocaleString(): Converts an array to a string using the locale-specific conventions of the current browser.
-    
-    toString(): Converts an array to a string by joining the elements with a comma.
-    
-    unshift(): Adds one or more elements to the beginning of an array and returns the new length of the array.
+        every()       Executes a function for each element in an array and returns true if the function returns true for all elements.
+        some()        Executes a function for each element in an array and returns true if the function returns true for at least one element.
+        filter()      Creates a new array with all elements from the original array that pass a test function.
+        find()        Returns the first element in an array that passes a test function, or undefined if no element passes the test.
+        findIndex()   Returns the index of the first element in an array that passes a test function, or -1 if no element passes the test.
+        map()         Creates a new array with the results of calling a function for each element in the original array.
+        reduce()      Reduces an array to a single value by calling a function for each element and passing an accumulator as an argument.
+        reduceRight() Reduces an array to a single value by calling a function for each element in reverse order and passing an accumulator as an argument.
+        flat()        Create a new array with all sub-array elements concatenated recursively to a specified depth.
+
+
+
+
+    4. Array Searching Methods:
+        ---These methods search for specific elements or conditions in the array.
+
+        find()          Find the first element in the array that satisfies a condition.
+        findIndex()     Find the index of the first element in the array that satisfies a condition.
+        findLast()      Iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function.
+        findLastIndex() Iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function.
+
+
+
+    5. Array Transformation Methods:
+        ---These methods create a new array by transforming or extracting data from the original array.
+
+
+        map()       Create a new array by applying a function to each element of the original array.
+        filter()    Create a new array with elements that pass a specific condition.
+        reduce()    Reduce the array to a single value using an accumulator and a combining function.
+        flatMap()   Map each element using a function, then flatten the result into a new array.
+
+
+    6. Array Sorting Methods:
+
+        toReverse()   Reverses the order of the elements in an array. ---- RETURNS NEW ARRAY ----
+        toSort()      Sorts the elements in an array in ascending or descending order. ---- RETURNS NEW ARRAY ----
+
     
 
     
@@ -76,23 +102,15 @@ export default () => {
     
 
       
-    Array.from(): Creates a new array from an iterable object.
+    Array.from()     Creates a new array from an iterable object.
     
-    Array.of(): Creates a new array from a list of elements.
+    Array.of()       Creates a new array from a list of elements.
     
-    Array.isArray(): Returns true if an object is an array, and false if it is not.
-    
-    Array.prototype.includes(): Returns true if an array contains a specified value, and false if it does not.
+    Array.isArray()  Returns true if an object is an array, and false if it is not.
     
 
-
-    --- The following methods modify the original array:
     
-    Array.push()
-    Array.pop()
-    Array.shift()
-    Array.unshift()
-        
+            
     
     --- The Array.forEach() method 
     does not return a new array and does not modify the original array. 
@@ -114,9 +132,16 @@ export default () => {
      */
 
 
+
+
+
+
+
     ///////////////////////////  ---  @s Reduce --- Find Last Object in Array of Objects 
 
-    let findLastObjectInArrayOfObjects = arrayOfObjects => arrayOfObjects.pop();
+    function findLastObjectInArrayOfObjects(arrayOfObjects) {
+        return arrayOfObjects.pop();
+    }
 
 
 

@@ -471,7 +471,7 @@ export default async () => {
 
 
 
-    // Short Version With Find
+    // Short Version With Find ---  BEST OPTION ⬇️⬇️⬇️⬇️⬇️⬇️
 
     let uniqueMessagesFind = messages.reduce((acc, message) => {
 
@@ -586,6 +586,8 @@ export default async () => {
     }, [])
 
 
+
+
     //  BEST OPTION ⬇️⬇️⬇️⬇️⬇️⬇️----------------------------------------------
 
 
@@ -673,32 +675,32 @@ export default async () => {
 
 
 
+    ///////////////////////////// ---  @s Reduce --- Group By Categories --- Array of Objects --- ( RETURNS SINGLE OBJECT )
 
 
-
-
-
-
-
-    ///////////////////////////// ---  @s Reduce --- Group Players By Points Objects in --- Array of Objects --- ( RETURNS SINGLE OBJECT )
-
-
-    const people = [
-        { name: 'Alex', points: 30 },
-        { name: 'Max', points: 30 },
-        { name: 'sony', points: 20 },
-        { name: 'molly', points: 20 },
-        { name: 'rex', points: false }
+    const fruits = [
+        { name: "Apple", category: "Fruits" },
+        { name: "Banana", category: "Fruits" },
+        { name: "Orange", category: "Fruits" },
+        { name: "Carrot", category: "Vegetables" },
+        { name: "Broccoli", category: "Vegetables" },
+        { name: "Grapes", category: "Fruits" },
+        { name: "Cucumber", category: "Vegetables" },
+        { name: "Pineapple", category: "Fruits" },
+        { name: "Tomato", category: "Vegetables" },
+        { name: "Watermelon", category: "Fruits" }
     ];
 
+    let group = fruits.reduce((acc, person) => {
 
-    let group = people.reduce((acc, { points, ...person }) => {
+        // Or Use ----->>>> const { points, ...person } = person
 
-        // Or Use ----->>>> const { points, ...person } = person , to have the complete object pushed
+        const { category } = person
 
-        if (points) {
-            acc[points] = acc[points] || [];
-            acc[points].push(person); //---------->  Or "person.name" to only have an array of names 
+        
+        if (category) {
+            acc[category] = acc[category] || []
+            acc[category].push(person); //---------->  Or "person.name" to only have an array of names 
         }
         return acc;
 
