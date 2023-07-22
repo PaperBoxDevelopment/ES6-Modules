@@ -11,13 +11,15 @@ export default async () => {
     const employees = dbs.collection("employees")
 
 
-    ///////////////////////////   @s Compare  MongoDB Objects with the .equals() Method
+    ///////////////////////////   @s Compare  MongoDB ObjectsId with the .equals() Method
 
     const objectId1 = new ObjectId("6469687cadf19edf56a73af5");
     const objectId2 = new ObjectId("6469687cadf19edf56a73af5");
 
     console.log(objectId1 == objectId2); // false
     console.log(objectId1.equals(objectId2)); // true
+    //example on how to use it
+    // const listOfInvoices = invoices.filter(invoice => invoice.customerId.equals(customer._id))
 
 
 

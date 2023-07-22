@@ -460,11 +460,30 @@ export default async () => {
 
         const duplicateMessage = acc.some(duplicate => duplicate.timestamp === message.timestamp);
 
+        // console.log('-----------acc-------------');
+        // console.log(acc);
+
         if (!duplicateMessage) acc.push(message);
 
         return acc;
     }, []);
 
+
+
+
+    // Short Version With Find
+
+    let uniqueMessagesFind = messages.reduce((acc, message) => {
+
+        const duplicateMessage = acc.find(duplicate => duplicate.timestamp === message.timestamp);
+
+        // console.log('-----------acc-------------');
+        // console.log(acc);
+
+        if (!duplicateMessage) acc.push(message);
+
+        return acc;
+    }, []);
 
 
 
@@ -480,6 +499,7 @@ export default async () => {
 
         const duplicateMessage = acc.filter(duplicate => duplicate.timestamp === message.timestamp)
 
+        // console.log(duplicateMessage.length);
 
         if (duplicateMessage.length === 0) acc.push(message)  // if one of these arrays is empty then push the non duplicated message
         // Then start the cycle again and go to the next message
