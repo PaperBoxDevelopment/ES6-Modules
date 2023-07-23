@@ -366,10 +366,10 @@ export default async () => {
     let repetitions = fruitBasket.reduce((acc, fruit) => {
 
 
-        acc[fruit] ? ++acc[fruit] : (acc[fruit] = 1) /* ->> THIS LINE COUNTS NULL AND UNDEFINED REPETITIONS */
+        // acc[fruit] ? ++acc[fruit] : (acc[fruit] = 1) /* ->> THIS LINE COUNTS NULL AND UNDEFINED REPETITIONS */
         // if (fruit) acc[fruit] = ++acc[fruit] || 1
         // if (fruit) acc[fruit] = (acc[fruit] || 0) + 1;
-        // if (fruit) acc[fruit] = acc[fruit] + 1 || 1;
+        if (fruit) acc[fruit] = acc[fruit] + 1 || 1;
         return acc;
 
     }, {});
@@ -604,9 +604,9 @@ export default async () => {
 
 
 
-
-    ///////////////////////////////////////////////////// ---- @s GROUP
-
+    /////////////////////////////////////////////////////                      /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP  ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                      /////////////////////////////////////////////////////
 
 
 
@@ -675,6 +675,8 @@ export default async () => {
 
 
 
+
+
     ///////////////////////////// ---  @s Reduce --- Group By Categories --- Array of Objects --- ( RETURNS SINGLE OBJECT )
 
 
@@ -691,13 +693,16 @@ export default async () => {
         { name: "Watermelon", category: "Fruits" }
     ];
 
-    let group = fruits.reduce((acc, person) => {
+
+    // Group To Object
+
+    let groupByCategoryToObject = fruits.reduce((acc, person) => {
 
         // Or Use ----->>>> const { points, ...person } = person
 
         const { category } = person
 
-        
+
         if (category) {
             acc[category] = acc[category] || []
             acc[category].push(person); //---------->  Or "person.name" to only have an array of names 
@@ -707,7 +712,26 @@ export default async () => {
 
     }, {})
 
-    // console.log(group);
+    // console.log(groupByCategoryToObject);
+
+
+
+    // Grouop to Array Of Objects
+
+    let groupByCategoryToArrayOfObject = fruits.reduce((acc, { category, ...rest }) => {
+
+        const existingCategory = acc.find(e => e[category]);
+
+        console.log(existingCategory);
+
+        if (existingCategory) existingCategory[category].push(rest);
+        else acc.push({ [category]: [rest] });
+
+
+        return acc;
+    }, []);
+
+    // console.log(...groupByCategoryToArrayOfObject);
 
 
 
@@ -715,11 +739,11 @@ export default async () => {
 
 
     const buyers = [
+        { amount: 300, date: "2020-05", user: "Juan Del Pueblo" },
         { amount: 252, date: "2020-04", user: "Bill Gates" },
         { amount: 658, date: "2020-04", user: "Jon Jones" },
         { amount: 789, date: "2020-05", user: "Jon Jones" },
         { amount: 5000.25, date: "2020-05", user: "Bill Gates" },
-        { amount: 300, date: "2020-05", user: "Juan Del Pueblo" },
         { user: "Pedro" },
     ];
 
@@ -780,14 +804,14 @@ export default async () => {
 
     const buyersWithTransactions3 = buyers
         .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
-        .reduce((acc, { user, date, amount }) => {
+        .reduce((acc, customer) => {
 
+            const { user, ...rest } = customer
 
-            const existingUser = acc.find(e => e.user === user);
+            const duplicateUser = acc.find(e => e.user === user);
 
-
-            if (existingUser) existingUser.transaction.push({ amount, date });
-            else acc.push({ user, transaction: [{ amount, date }] });
+            if (duplicateUser) duplicateUser.transaction.push(rest);
+            else acc.push({ user, transaction: [rest] });
 
             return acc;
 
@@ -895,8 +919,50 @@ export default async () => {
 
 
 
+    ///////////////////////////// --- @s Reduce --- Group by Type or Category In Same Array of Objects
 
 
+
+    const paddocks2 = [
+        { id: 1, harvestYear: 2019, area: 1200, type: 'PALTOS' },
+        { id: 4, harvestYear: 2019, area: 500, type: 'NOGALES' },
+        { id: 2, harvestYear: 2020, area: 20000, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2021, area: 8401, type: 'CEREZAS' },
+        { id: 1, harvestYear: 2020, area: 2877, type: 'PALTOS' },
+        { id: 2, harvestYear: 2017, area: 15902, type: 'AVELLANOS' },
+        { id: 2, harvestYear: 2018, area: 1736, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2020, area: 2965, type: 'CEREZAS' },
+        { id: 4, harvestYear: 2018, area: 1651, type: 'NOGALES' },
+        { id: 1, harvestYear: 2018, area: 700, type: 'PALTOS' },
+        { id: 1, harvestYear: 2019, area: 7956, type: 'PALTOS' },
+        { id: 2, harvestYear: 2020, area: 3745, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2021, area: 11362, type: 'CEREZAS' },
+        { id: 3, harvestYear: 2021, area: 300, type: 'CEREZAS' },
+        { id: 2, harvestYear: 2020, area: 19188, type: 'AVELLANOS' },
+        { id: 1, harvestYear: 2019, area: 17137, type: 'PALTOS' },
+        { id: 2, harvestYear: 2020, area: 100, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2019, area: 11845, type: 'CEREZAS' },
+        { id: 1, harvestYear: 2018, area: 15969, type: 'PALTOS' },
+        { id: 1, harvestYear: 2029, area: 10420, type: 'PALTOS' },
+        { id: 3, harvestYear: 2010, area: 3200, type: 'CEREZAS' },
+        { id: 2, harvestYear: 2012, area: 10587, type: 'AVELLANOS' },
+        { id: 2, harvestYear: 2018, area: 16750, type: 'AVELLANOS' }
+    ];
+
+
+
+    const groupedByType = paddocks2.reduce((acc, paddock) => {
+
+        const { type, ...rest } = paddock;
+        const existingGroup = acc.find(item => item.type === type);
+
+        if (existingGroup) existingGroup.listOfPaddocks.push(rest);
+        else acc.push({ type, listOfPaddocks: [rest] });
+        return acc;
+
+    }, []);
+
+    // console.log(...groupedByType);
 
 
 
@@ -939,6 +1005,9 @@ export default async () => {
 
 
 
+
+
+    // /////////////////////// Reduce + Map
 
     let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
 
@@ -1080,9 +1149,6 @@ export default async () => {
 
 
     // console.log(total2);
-
-
-
 
 
 
