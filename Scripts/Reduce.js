@@ -287,7 +287,7 @@ export default async () => {
 
 
 
-    /////////////////////////// ---  @s Reduce ---  Convert Array to Array of Objects with default Key
+    /////////////////////////// ---  @s Reduce --- Convert Array to Array of Objects with default Key
 
     let arrayToObjectReducee = array.reduce((acc, number) => [...acc, { [number]: number }], []);
 
@@ -604,9 +604,9 @@ export default async () => {
 
 
 
-    /////////////////////////////////////////////////////                      /////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////// ---- @s GROUP  ----  /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////                      /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                   /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s REDUCE WITH ...REST  ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                   /////////////////////////////////////////////////////
 
 
 
@@ -677,6 +677,15 @@ export default async () => {
 
 
 
+
+    /////////////////////////////////////////////////////                         /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP BY   ---- /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                         /////////////////////////////////////////////////////
+
+
+
+
+
     ///////////////////////////// ---  @s Reduce --- Group By Categories --- Array of Objects --- ( RETURNS SINGLE OBJECT )
 
 
@@ -716,13 +725,11 @@ export default async () => {
 
 
 
-    // Grouop to Array Of Objects
 
-    let groupByCategoryToArrayOfObject = fruits.reduce((acc, { category, ...rest }) => {
 
-        const existingCategory = acc.find(e => e[category]);
+    let groupByCategoryToArrayOfObjects1 = fruits.reduce((acc, { category, ...rest }) => {
 
-        console.log(existingCategory);
+        const existingCategory = acc.find(item => item[category]);
 
         if (existingCategory) existingCategory[category].push(rest);
         else acc.push({ [category]: [rest] });
@@ -731,7 +738,35 @@ export default async () => {
         return acc;
     }, []);
 
-    // console.log(...groupByCategoryToArrayOfObject);
+    // console.log(...groupByCategoryToArrayOfObjects1);
+
+
+
+
+    let groupByCategoryToArrayOfObjects2 = fruits.reduce((acc, { name, category }) => {
+
+        const existingCategory = acc.find(item => item.category === category);
+
+        if (existingCategory) existingCategory.names.push({ name });
+        else acc.push({ category, names: [{ name }] });
+
+        return acc;
+    }, []);
+
+
+
+
+    // console.log(...groupByCategoryToArrayOfObjects2);
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -741,37 +776,12 @@ export default async () => {
     const buyers = [
         { amount: 300, date: "2020-05", user: "Juan Del Pueblo" },
         { amount: 252, date: "2020-04", user: "Bill Gates" },
-        { amount: 658, date: "2020-04", user: "Jon Jones" },
-        { amount: 789, date: "2020-05", user: "Jon Jones" },
+        { amount: 700, date: "2020-04", user: "Jon Jones" },
+        { amount: 700, date: "2020-05", user: "Jon Jones" },
         { amount: 5000.25, date: "2020-05", user: "Bill Gates" },
         { user: "Pedro" },
     ];
 
-
-
-
-    // First Option (Not easy to understand but more efficient than the first one)
-
-
-    const buyersWithTransactions = buyers.reduce((acc, { user, date, amount }) => {
-
-
-        if (date && amount) {
-
-            const index = acc.findIndex(e => e.user === user);
-
-            if (index !== -1) acc[index].transaction.push({ amount, date })
-
-            else acc.push({ user, transaction: [{ amount, date }] })
-        }
-
-        return acc;
-
-    }, []);
-
-
-
-    //  BEST OPTION for Performance ⬇️⬇️⬇️⬇️⬇️⬇️----------------------------------------------
 
 
 
@@ -793,37 +803,236 @@ export default async () => {
     const result = Array.from(buyersWithTransactionsMap.values());
 
 
-    // console.log(...result);
 
 
 
 
-
-
-    //  BEST READABLE VERSION ⬇️⬇️⬇️⬇️⬇️⬇️----------------------------------------------
-
-    const buyersWithTransactions3 = buyers
+    const buyersWithTransactions1 = buyers
         .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
-        .reduce((acc, customer) => {
+        .reduce((acc, { user, ...rest }) => {
 
-            const { user, ...rest } = customer
+            const duplicateUser = acc.find(item => item[user]);
 
-            const duplicateUser = acc.find(e => e.user === user);
-
-            if (duplicateUser) duplicateUser.transaction.push(rest);
-            else acc.push({ user, transaction: [rest] });
+            if (duplicateUser) duplicateUser[user].push(rest);
+            else acc.push({ [user]: [rest] });
 
             return acc;
 
         }, []);
 
-    // console.log(...buyersWithTransactions3);
+
+
+
+    const buyersWithTransactions2 = buyers
+        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
+        .reduce((acc, { user, ...rest }) => {
+
+            const duplicateUser = acc.find(item => item.user === user);
+
+
+            if (duplicateUser) duplicateUser.transactions.push(rest);
+            else acc.push({ user, transactions: [rest] });
+
+            return acc;
+
+        }, []);
 
 
 
 
 
-    ///////////////////////////// --- @s Reduce --- Group Find Weapons damage and range from characters in a separate Object --- (RETURNS SINGLE OBJECT)
+    const buyersWithTransactions3 = buyers
+        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
+        .reduce((acc, { user, amount, ...rest }) => {
+
+            const duplicateUser = acc.find(item => item.user === user);
+
+
+            if (duplicateUser) {
+                duplicateUser.totalTransactions += amount; // Add the amount to the existing total
+                duplicateUser.transactions.push({ amount, ...rest });
+            } else {
+                acc.push({
+                    user,
+                    totalTransactions: amount, // Initialize totalTransactions for new user
+                    transactions: [{ amount, ...rest }],
+                });
+            }
+            return acc;
+
+        }, []);
+
+
+
+
+
+
+
+    ///////////////////////////// --- @s Reduce --- Group by Type or Category In Same Array of Objects
+
+
+
+    const paddocksWithCategory = [
+        { id: 1, harvestYear: 2019, area: 1200, type: 'PALTOS' },
+        { id: 4, harvestYear: 2019, area: 500, type: 'NOGALES' },
+        { id: 2, harvestYear: 2020, area: 20000, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2021, area: 8401, type: 'CEREZAS' },
+        { id: 1, harvestYear: 2020, area: 2877, type: 'PALTOS' },
+        { id: 2, harvestYear: 2017, area: 15902, type: 'AVELLANOS' },
+        { id: 2, harvestYear: 2018, area: 1736, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2020, area: 2965, type: 'CEREZAS' },
+        { id: 4, harvestYear: 2018, area: 1651, type: 'NOGALES' },
+        { id: 1, harvestYear: 2018, area: 700, type: 'PALTOS' },
+        { id: 1, harvestYear: 2019, area: 7956, type: 'PALTOS' },
+        { id: 2, harvestYear: 2020, area: 3745, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2021, area: 11362, type: 'CEREZAS' },
+        { id: 3, harvestYear: 2021, area: 300, type: 'CEREZAS' },
+        { id: 2, harvestYear: 2020, area: 19188, type: 'AVELLANOS' },
+        { id: 1, harvestYear: 2019, area: 17137, type: 'PALTOS' },
+        { id: 2, harvestYear: 2020, area: 100, type: 'AVELLANOS' },
+        { id: 3, harvestYear: 2019, area: 11845, type: 'CEREZAS' },
+        { id: 1, harvestYear: 2018, area: 15969, type: 'PALTOS' },
+        { id: 1, harvestYear: 2029, area: 10420, type: 'PALTOS' },
+        { id: 3, harvestYear: 2010, area: 3200, type: 'CEREZAS' },
+        { id: 2, harvestYear: 2012, area: 10587, type: 'AVELLANOS' },
+        { id: 2, harvestYear: 2018, area: 16750, type: 'AVELLANOS' }
+    ];
+
+
+
+    const groupedByType1 = paddocksWithCategory.reduce((acc, { type, ...rest }) => {
+
+        const existingGroup = acc.find(item => item[type]);
+
+        if (existingGroup) existingGroup[type].push(rest);
+        else acc.push({ [type]: [rest] });
+        return acc;
+
+    }, []);
+
+    // console.log(...groupedByType1);
+
+
+
+
+    const groupedByType2 = paddocksWithCategory.reduce((acc, { type, ...rest }) => {
+
+        const existingType = acc.find(item => item.type === type);
+
+        if (existingType) existingType.listOfPaddocks.push(rest);
+        else acc.push({ type, listOfPaddocks: [rest] });
+
+        return acc;
+
+    }, []);
+
+    // console.log(...groupedByType2);
+
+
+
+
+
+
+    /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s JOIN   ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
+
+
+
+
+
+
+    ///////////////////////////// --- @s Reduce --- Join And Group by ID's and Sums The area. and with map Joins Reducer with Array --- (RETURNS SINGLE OBJECT)
+
+
+
+    const paddockType = [
+        { id: 1, name: 'PALTOS' },
+        { id: 2, name: 'AVELLANOS' },
+        { id: 3, name: 'CEREZAS' },
+        { id: 4, name: 'NOGALES' },
+    ]
+    const paddocks = [
+        { id: 1, harvestYear: 2019, area: 1200 },
+        { id: 4, harvestYear: 2019, area: 500 },
+        { id: 2, harvestYear: 2020, area: 20000 },
+        { id: 3, harvestYear: 2021, area: 8401 },
+        { id: 1, harvestYear: 2020, area: 2877 },
+        { id: 2, harvestYear: 2017, area: 15902 },
+        { id: 2, harvestYear: 2018, area: 1736 },
+        { id: 3, harvestYear: 2020, area: 2965 },
+        { id: 4, harvestYear: 2018, area: 1651 },
+        { id: 1, harvestYear: 2018, area: 700 },
+        { id: 1, harvestYear: 2019, area: 7956 },
+        { id: 2, harvestYear: 2020, area: 3745 },
+        { id: 3, harvestYear: 2021, area: 11362 },
+        { id: 3, harvestYear: 2021, area: 300 },
+        { id: 2, harvestYear: 2020, area: 19188 },
+        { id: 1, harvestYear: 2019, area: 17137 },
+        { id: 2, harvestYear: 2020, area: 100 },
+        { id: 3, harvestYear: 2019, area: 11845 },
+        { id: 1, harvestYear: 2018, area: 15969 },
+        { id: 1, harvestYear: 2029, area: 10420 },
+        { id: 3, harvestYear: 2010, area: 3200 },
+        { id: 2, harvestYear: 2012, area: 10587 },
+        { id: 2, harvestYear: 2018, area: 16750 }
+    ];
+
+
+
+
+    // /////////////////////// Reduce + Map
+
+    let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
+
+        if (id) acc[id] = acc[id] || 0
+        acc[id] = acc[id] + area
+        acc.totaTreesArea += area
+
+        return acc
+
+    }, { totaTreesArea: 0 })
+
+
+
+    // console.log(reduceArrayToObject);
+
+    let sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
+
+
+
+    // console.log(sumsEachTreeArea);
+
+
+
+    // /////////////////////// Much Better Version ⬇️⬇️⬇️⬇️⬇️⬇️
+
+
+    ///////////////////////////// --- @s Reduce --- Join And Group 2 Arrays Of Objects By by ID's --- ( RETURNS ARRAY OF OBJECTS )
+
+
+    let groupArraysOfObjectsByID = paddockType.reduce((acc, item) => {
+
+
+        let listOfPaddocks = paddocks.filter(paddock => paddock.id === item.id)
+        let totalArea = listOfPaddocks.reduce((acc, { area }) => acc + area, 0)
+
+        if (listOfPaddocks) acc.push({ ...item, totalArea, listOfPaddocks })
+
+
+        return acc
+    }, [])
+
+    // console.log(...groupArraysOfObjectsByID);
+
+
+
+
+
+
+
+
+    ///////////////////////////// --- @s Reduce --- Join And Group Find Weapons damage and range from characters in a separate Object --- (RETURNS SINGLE OBJECT)
 
     const characters = [
 
@@ -919,137 +1128,12 @@ export default async () => {
 
 
 
-    ///////////////////////////// --- @s Reduce --- Group by Type or Category In Same Array of Objects
 
 
 
-    const paddocks2 = [
-        { id: 1, harvestYear: 2019, area: 1200, type: 'PALTOS' },
-        { id: 4, harvestYear: 2019, area: 500, type: 'NOGALES' },
-        { id: 2, harvestYear: 2020, area: 20000, type: 'AVELLANOS' },
-        { id: 3, harvestYear: 2021, area: 8401, type: 'CEREZAS' },
-        { id: 1, harvestYear: 2020, area: 2877, type: 'PALTOS' },
-        { id: 2, harvestYear: 2017, area: 15902, type: 'AVELLANOS' },
-        { id: 2, harvestYear: 2018, area: 1736, type: 'AVELLANOS' },
-        { id: 3, harvestYear: 2020, area: 2965, type: 'CEREZAS' },
-        { id: 4, harvestYear: 2018, area: 1651, type: 'NOGALES' },
-        { id: 1, harvestYear: 2018, area: 700, type: 'PALTOS' },
-        { id: 1, harvestYear: 2019, area: 7956, type: 'PALTOS' },
-        { id: 2, harvestYear: 2020, area: 3745, type: 'AVELLANOS' },
-        { id: 3, harvestYear: 2021, area: 11362, type: 'CEREZAS' },
-        { id: 3, harvestYear: 2021, area: 300, type: 'CEREZAS' },
-        { id: 2, harvestYear: 2020, area: 19188, type: 'AVELLANOS' },
-        { id: 1, harvestYear: 2019, area: 17137, type: 'PALTOS' },
-        { id: 2, harvestYear: 2020, area: 100, type: 'AVELLANOS' },
-        { id: 3, harvestYear: 2019, area: 11845, type: 'CEREZAS' },
-        { id: 1, harvestYear: 2018, area: 15969, type: 'PALTOS' },
-        { id: 1, harvestYear: 2029, area: 10420, type: 'PALTOS' },
-        { id: 3, harvestYear: 2010, area: 3200, type: 'CEREZAS' },
-        { id: 2, harvestYear: 2012, area: 10587, type: 'AVELLANOS' },
-        { id: 2, harvestYear: 2018, area: 16750, type: 'AVELLANOS' }
-    ];
-
-
-
-    const groupedByType = paddocks2.reduce((acc, paddock) => {
-
-        const { type, ...rest } = paddock;
-        const existingGroup = acc.find(item => item.type === type);
-
-        if (existingGroup) existingGroup.listOfPaddocks.push(rest);
-        else acc.push({ type, listOfPaddocks: [rest] });
-        return acc;
-
-    }, []);
-
-    // console.log(...groupedByType);
-
-
-
-
-    ///////////////////////////// --- @s Reduce --- Group by ID's and Sums The area. and with map Joins Reducer with Array --- (RETURNS SINGLE OBJECT)
-
-
-
-    const paddockType = [
-        { id: 1, name: 'PALTOS' },
-        { id: 2, name: 'AVELLANOS' },
-        { id: 3, name: 'CEREZAS' },
-        { id: 4, name: 'NOGALES' },
-    ]
-    const paddocks = [
-        { id: 1, harvestYear: 2019, area: 1200 },
-        { id: 4, harvestYear: 2019, area: 500 },
-        { id: 2, harvestYear: 2020, area: 20000 },
-        { id: 3, harvestYear: 2021, area: 8401 },
-        { id: 1, harvestYear: 2020, area: 2877 },
-        { id: 2, harvestYear: 2017, area: 15902 },
-        { id: 2, harvestYear: 2018, area: 1736 },
-        { id: 3, harvestYear: 2020, area: 2965 },
-        { id: 4, harvestYear: 2018, area: 1651 },
-        { id: 1, harvestYear: 2018, area: 700 },
-        { id: 1, harvestYear: 2019, area: 7956 },
-        { id: 2, harvestYear: 2020, area: 3745 },
-        { id: 3, harvestYear: 2021, area: 11362 },
-        { id: 3, harvestYear: 2021, area: 300 },
-        { id: 2, harvestYear: 2020, area: 19188 },
-        { id: 1, harvestYear: 2019, area: 17137 },
-        { id: 2, harvestYear: 2020, area: 100 },
-        { id: 3, harvestYear: 2019, area: 11845 },
-        { id: 1, harvestYear: 2018, area: 15969 },
-        { id: 1, harvestYear: 2029, area: 10420 },
-        { id: 3, harvestYear: 2010, area: 3200 },
-        { id: 2, harvestYear: 2012, area: 10587 },
-        { id: 2, harvestYear: 2018, area: 16750 }
-    ];
-
-
-
-
-
-    // /////////////////////// Reduce + Map
-
-    let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
-
-        if (id) acc[id] = acc[id] || 0
-        acc[id] = acc[id] + area
-        acc.totaTreesArea += area
-
-        return acc
-
-    }, { totaTreesArea: 0 })
-
-
-
-    // console.log(reduceArrayToObject);
-
-    let sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
-
-
-
-    // console.log(sumsEachTreeArea);
-
-
-
-    // /////////////////////// Much Better Version ⬇️⬇️⬇️⬇️⬇️⬇️
-
-
-    ///////////////////////////// --- @s Reduce --- Group 2 Arrays Of Objects By by ID's --- ( RETURNS ARRAY OF OBJECTS )
-
-
-    let groupArraysOfObjectsByID = paddockType.reduce((acc, item) => {
-
-
-        let listOfPaddocks = paddocks.filter(paddock => paddock.id === item.id)
-        let totalArea = listOfPaddocks.reduce((acc, { area }) => acc + area, 0)
-
-        if (listOfPaddocks) acc.push({ ...item, totalArea, listOfPaddocks })
-
-
-        return acc
-    }, [])
-
-    // console.log(...groupArraysOfObjectsByID);
+    /////////////////////////////////////////////////////                               /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s CATEGORIZE BY   ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                               /////////////////////////////////////////////////////
 
 
 
@@ -1057,7 +1141,7 @@ export default async () => {
 
 
 
-    ///////////////////////////// ---  @s Reduce --- Groups Object with an Initial Value --- Array Of Objects --- ( RETURNS SINGLE OBJECT )
+    ///////////////////////////// ---  @s Reduce --- Categorize Object Values with an Initial Value --- Array Of Objects --- ( RETURNS SINGLE OBJECT )
 
 
     const climateBehaviours = [
@@ -1130,8 +1214,6 @@ export default async () => {
             cartTotal: 0
         }
     )
-
-
 
 
 
