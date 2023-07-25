@@ -282,14 +282,14 @@ export default async () => {
 
     ///////////////////////////   ---  @s Reduce --- Array to Object   --- ( RETURNS SINGLE OBJECT )
 
-    let arrayToObjectReduce = array.reduce((acc, number) => ({ ...acc, [number]: number }), {})
+    let arrayToObjectReduceToObject = array.reduce((acc, number) => ({ ...acc, [number]: number }), {})
 
 
 
 
     /////////////////////////// ---  @s Reduce --- Convert Array to Array of Objects with default Key
 
-    let arrayToObjectReducee = array.reduce((acc, number) => [...acc, { [number]: number }], []);
+    let arrayToObjectReduceToArray = array.reduce((acc, number) => [...acc, { [number]: number }], []);
 
 
 
@@ -306,7 +306,6 @@ export default async () => {
 
 
     /////////////////////// LOOK FOR THE OTHER NESTED OBJECT A COUPLE LINES DOWN
-
 
 
 
@@ -454,6 +453,8 @@ export default async () => {
     ];
 
 
+
+
     // Short Version With Some
 
     let uniqueMessagesSome = messages.reduce((acc, message) => {
@@ -509,7 +510,6 @@ export default async () => {
 
 
     }, []);
-
 
 
 
@@ -763,13 +763,6 @@ export default async () => {
 
 
 
-
-
-
-
-
-
-
     /////////////////////////// ---  @s Reduce --- Group Transactions By Name / Creates Nest / Concatenate Doubles   --- Array of Objects from  ---  Array of Objects --- ( RETURNS ARRAY OF OBJECTS )
 
 
@@ -819,6 +812,7 @@ export default async () => {
             return acc;
 
         }, []);
+
 
 
 
@@ -934,16 +928,14 @@ export default async () => {
 
 
     /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////// ---- @s JOIN   ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////  ---- @s JOIN   ----  /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
 
 
 
 
 
-
-    ///////////////////////////// --- @s Reduce --- Join And Group by ID's and Sums The area. and with map Joins Reducer with Array --- (RETURNS SINGLE OBJECT)
-
+    ///////////////////////////// --- @s Reduce --- Join And Group 2 Arrays Of Objects By by ID's --- ( RETURNS ARRAY OF OBJECTS )
 
 
     const paddockType = [
@@ -981,40 +973,11 @@ export default async () => {
 
 
 
-    // /////////////////////// Reduce + Map
-
-    let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
-
-        if (id) acc[id] = acc[id] || 0
-        acc[id] = acc[id] + area
-        acc.totaTreesArea += area
-
-        return acc
-
-    }, { totaTreesArea: 0 })
-
-
-
-    // console.log(reduceArrayToObject);
-
-    let sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
-
-
-
-    // console.log(sumsEachTreeArea);
-
-
-
-    // /////////////////////// Much Better Version ⬇️⬇️⬇️⬇️⬇️⬇️
-
-
-    ///////////////////////////// --- @s Reduce --- Join And Group 2 Arrays Of Objects By by ID's --- ( RETURNS ARRAY OF OBJECTS )
-
-
     let groupArraysOfObjectsByID = paddockType.reduce((acc, item) => {
 
-
+        // give an Array of all paddocks with the same ID we are iterating ⬇⬇⬇⬇⬇⬇⬇⬇
         let listOfPaddocks = paddocks.filter(paddock => paddock.id === item.id)
+
         let totalArea = listOfPaddocks.reduce((acc, { area }) => acc + area, 0)
 
         if (listOfPaddocks) acc.push({ ...item, totalArea, listOfPaddocks })
@@ -1023,7 +986,38 @@ export default async () => {
         return acc
     }, [])
 
+
     // console.log(...groupArraysOfObjectsByID);
+
+
+
+
+
+    /*     // ///////////////////////  Reduce + Map
+    
+        let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
+    
+            if (id) acc[id] = acc[id] || 0
+            acc[id] = acc[id] + area
+            acc.totaTreesArea += area
+    
+            return acc
+    
+        }, { totaTreesArea: 0 })
+    
+    
+    
+        console.log(reduceArrayToObject);
+    
+        let sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
+    
+    
+    
+        // console.log(sumsEachTreeArea);
+    
+    
+    
+        // /////////////////////// Much Better Version ⬇️⬇️⬇️⬇️⬇️⬇️ */
 
 
 
