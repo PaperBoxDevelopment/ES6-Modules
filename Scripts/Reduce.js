@@ -1,7 +1,12 @@
 
+
+
 import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, listOfEmployees } from "../data.js";
 
 console.log('Reduce is alive');
+
+
+
 
 export default async () => {
 
@@ -264,7 +269,6 @@ export default async () => {
 
 
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,14 +459,13 @@ export default async () => {
 
 
 
+
+
     // Short Version With Some
 
     let uniqueMessagesSome = messages.reduce((acc, message) => {
 
         const duplicateMessage = acc.some(duplicate => duplicate.timestamp === message.timestamp);
-
-        // console.log('-----------acc-------------');
-        // console.log(acc);
 
         if (!duplicateMessage) acc.push(message);
 
@@ -477,9 +480,6 @@ export default async () => {
     let uniqueMessagesFind = messages.reduce((acc, message) => {
 
         const duplicateMessage = acc.find(duplicate => duplicate.timestamp === message.timestamp);
-
-        // console.log('-----------acc-------------');
-        // console.log(acc);
 
         if (!duplicateMessage) acc.push(message);
 
@@ -703,6 +703,11 @@ export default async () => {
     ];
 
 
+
+
+
+
+
     // Group To Object
 
     let groupByCategoryToObject = fruits.reduce((acc, person) => {
@@ -796,6 +801,44 @@ export default async () => {
     const result = Array.from(buyersWithTransactionsMap.values());
 
 
+
+
+
+
+
+
+    const buyersWithTransactions = [];
+
+    for (const buyer of buyers) {
+
+        const { user, date, amount, ...rest } = buyer
+
+
+        if (date && amount) {
+
+            const duplicateUser = buyersWithTransactions.find(item => item[user]);
+            if (duplicateUser) duplicateUser[user].push({ date, amount, ...rest });
+            else buyersWithTransactions.push({ [user]: [{ date, amount, ...rest }] });
+        }
+
+    }
+
+
+
+    const buyersWithTransactions0 = buyers
+
+        .reduce((emptyArray, userIterated) => {
+
+            let { user, ...rest } = userIterated
+
+            const duplicatedUserInEmptyArray = emptyArray.find(item => item[user]);
+
+            if (duplicatedUserInEmptyArray) duplicatedUserInEmptyArray[user].push(rest);
+            else emptyArray.push({ [user]: [rest] });
+
+            return emptyArray;
+
+        }, []);
 
 
 

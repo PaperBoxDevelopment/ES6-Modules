@@ -3,15 +3,23 @@
 import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph } from "../data.js";
 
 
-
 export default () => {
+
+
+
+    
+
 
     ///////////////////////////////// @s Array Methods
 
 
-    /*
-      
 
+
+
+    /*
+
+
+      
 
     1. Array Modification Methods:
         --- These methods MODIFY the original array
@@ -33,8 +41,6 @@ export default () => {
         --- Iterate
 
         forEach()     Executes a function for each element in an array.
-
-
 
 
     2. Array Accessor Methods:
@@ -132,10 +138,6 @@ export default () => {
      */
 
 
-    
-
-
-    
 
 
     ///////////////////////////  ---  @s Reduce --- Find Last Object in Array of Objects 
