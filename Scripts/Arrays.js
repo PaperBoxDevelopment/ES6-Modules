@@ -3,8 +3,8 @@
 import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph } from "../data.js";
 
 
-export default () => {
 
+export default () => {
 
 
     
@@ -17,6 +17,7 @@ export default () => {
 
 
     /*
+
 
 
       
