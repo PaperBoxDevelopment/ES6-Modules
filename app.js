@@ -1,6 +1,5 @@
 console.log('App Runing Alive...');
 import dotenv from 'dotenv'
-import helpers from "./Scripts/helperFunctions.js";
 import connectDB from "./dbs.js";
 import Maps from "./Scripts/Maps.js"
 import Loops from "./Scripts/Loops.js"
@@ -17,7 +16,7 @@ import FunctionalProgamming from "./Scripts/Functional.js"
 
 
 dotenv.config()
-global.info = helpers.info
+
 // global.dbs = await connectDB()
 
 

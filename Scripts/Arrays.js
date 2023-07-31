@@ -161,6 +161,17 @@ export default () => {
 
 
 
+
+
+    ///////////////////////////   @s Shuffle Array of Numbers
+
+
+    let shuffleNumbers = arrayOfNumbers => arrayOfNumbers.sort(() => Math.random() - 0.5)
+
+
+
+
+
     ///////////////////////////   @s Create Array Of Objects With Random Numbers
 
 
@@ -170,6 +181,7 @@ export default () => {
             return { value: randomNumber }
         })
     }
+
 
 
     ///////////////////////////   @s Empty An Array   
@@ -251,6 +263,23 @@ export default () => {
 
     let maxValue = (array) => Math.max(...array)
     let minValue = (array) => Math.min(...array)
+
+
+
+
+    ///////////////////////////   @s Insert Array into Function Arguments
+
+    let arrayForFunction = [0, 1, 2, 'test'];
+
+    let first = (...args) => args;                       // Returns [Array]
+    let second = (...args) => ({ ...args });             // Returns {ArrayLike Object} = {index : value}
+    let third = (...args) => { return { ...args } };     // Returns {Object : [Array]}
+
+
+
+    //console.log(first(...arrayForFunction));  // Returns ---> [ 0, 1, 2, 'test' ]
+    //console.log(second(...arrayForFunction)); // Returns ---> { '0': 0, '1': 1, '2': 2, '3': 'test' }
+    //console.log(third(arrayForFunction));     // Returns ---> { '0': [ 0, 1, 2, 'test' ] }
 
 
 

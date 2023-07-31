@@ -16,8 +16,8 @@ export default async () => {
     const objectId1 = new ObjectId("6469687cadf19edf56a73af5");
     const objectId2 = new ObjectId("6469687cadf19edf56a73af5");
 
-    console.log(objectId1 == objectId2); // false
-    console.log(objectId1.equals(objectId2)); // true
+    // console.log(objectId1 == objectId2); // false
+    // console.log(objectId1.equals(objectId2)); // true
     //example on how to use it
     // const listOfInvoices = invoices.filter(invoice => invoice.customerId.equals(customer._id))
 
@@ -74,7 +74,13 @@ export default async () => {
     // @s $match
 
     let match = async () => await employees.aggregate([{ $match: { "dept": "Admin" } }]).toArray()
-    // console.log(await match());
+    
+    
+    
+    let matchAll = async () => await moviesCollection.aggregate([]).toArray()
+    // console.log(await matchAll());
+
+
 
 
 

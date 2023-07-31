@@ -42,7 +42,7 @@ export default () => {
 
 
 
-    ///////////////////////////  @s Loop Object letiation  
+    ///////////////////////////  @s Loop Object Iteration 
 
     let emptyArray = []
 
@@ -111,37 +111,212 @@ export default () => {
     // console.log(arrayOfObjects2);
 
 
-    ///////////////////////////  @s Speed Test Between  Reduce and ForOf Loop   
 
 
-    // ForOf Time
 
 
-    // console.time()
-
-    let start = 0
+    ////////////////////////////////////   @s Count the number of True values in --- Array Of Objects ---
 
 
-    for (const obj of arrayOfObjects2) {
-        let { value } = obj
 
-        start += isNaN(value) ? 0 : value;
+
+
+
+    let trueValuesLenght = arrayOfObjects => arrayOfObjects.filter(item => Object.values(item).every(Boolean)).length
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////   @s Count the number of true / false values in an Array of Objects
+
+
+    let obj = [
+        {
+            isMarried: true
+        },
+        {
+            isMarried: false
+        },
+        {
+            isMarried: true
+        },
+        {
+            isMarried: true
+        },
+        {
+            isMarried: false
+        }
+    ]
+
+
+    // Frist Options By Loops
+
+    function numberOfArrayOfObjectsTrueValues(arrayOfObjects, key) {
+        let counter = 0;
+        for (let index = 0; index < arrayOfObjects.length; index++) {
+            if (arrayOfObjects[index][key] === true) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    function numberOfArrayOfObjectsFalseValues(arrayOfObjects, key) {
+        let counter = 0;
+        for (let index = 0; index < arrayOfObjects.length; index++) {
+            if (arrayOfObjects[index][key] === false) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+
+    // console.log(numberOfArrayOfObjectsTrueValues(obj, "isMarried"));
+    // console.log(numberOfArrayOfObjectsFalseValues(obj, "isMarried"));
+
+
+    // Second Options by Filter
+
+    let numberOfArrayOfObjectsTrueValues2 = (object, key) => object.filter(item => item[key]).length
+    let numberOfArrayOfObjectsFalseValues2 = (object, key) => object.filter(item => !item[key]).length
+
+
+    // console.log(numberOfArrayOfObjectsTrueValues2(obj, 'isMarried'));
+    // console.log(numberOfArrayOfObjectsFalseValues2(obj, "isMarried"));
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////   @s Find False values from Array and Index Number
+
+    let findAllFalseValuesInArray = array => {
+
+        let emptyArray = []
+        for (const [index, value] of array.entries()) {
+            if (value == false) { emptyArray.push({ [index]: value }) }
+            if (value == undefined) { emptyArray.push({ [index]: value }) }
+            if (Number.isNaN(value)) { emptyArray.push({ [index]: value }) }
+
+        }
+        return emptyArray
 
     }
-    // console.timeEnd()
+
+    // console.log(findAllFalseValuesInArray(array));
 
 
 
 
 
 
-    // Reduce Time
 
-    // console.time()
 
-    let reduceMethod = arrayOfObjects2.reduce((acc, { value }) => acc + (isNaN(value) ? 0 : value), 0)
+    ////////////////////////////////////   @s Find False values from --- Array of Objects--- and Index Number
 
-    // console.timeEnd()
+    let findAllFalseValuesInArrayOfObjects = arrayOfObjects => {
+        let emptyArray = []
+        arrayOfObjects.map((object, index) => {
+            for (const key in object) {
+                if (Object.hasOwnProperty.call(object, key)) {
+                    const k = key
+                    const value = object[key];
+                    if (value == undefined) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+                    if (value == false) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+                    if (Number.isNaN(value)) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+                }
+            }
+        })
+
+        return emptyArray
+    }
+
+    // console.log(findAllFalseValuesInArrayOfObjects(arrayOfObjects));
+
+
+
+
+
+    ///////////////////////////// --- @s Finds False Values in Products API
+
+
+
+    let fetchProducts = async () => {
+
+        const response = await fetch("https://api.escuelajs.co/api/v1/products")
+        const data = await response.json()
+
+
+
+        // Adding Ramdomly falsy values
+
+        data[100].price = false
+        data[200].price = undefined
+        data[50].price = null
+        data[22].price = 'string'
+
+
+
+
+        // Finding The falsy values
+
+        let emptyArray = []
+
+        data.map((object, index) => {
+            for (const key in object) {
+                if (Object.hasOwnProperty.call(object, key)) {
+                    const k = key
+                    const value = object[key];
+
+                    if (value == undefined) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+                    if (value == false) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+                    if (Number.isNaN(value)) { emptyArray.push({ [index]: { [k]: value, ...object } }) }
+
+                }
+            }
+        })
+
+
+        return emptyArray
+
+
+    }
+
+
+
+    // console.log(await fetchProducts());
+
+
+    
+    
+    
+    
+
+
+
+    ////////////////////////////////////   @s Remove All False Values From --- Array of Objects ---
+
+
+    let removeAllFalseValuesFromArrayOfObjects = arrayOfObjects => arrayOfObjects.filter(item => Object.values(item).every(Boolean))
+
+
+
+    // console.log(removeAllFalseValuesFromArrayOfObjects(arrayOfObjects));
+
+    
+    
+
+
 
 
 
