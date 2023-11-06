@@ -1,9 +1,10 @@
+import colors from "colors";
 
 
 
-import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, listOfEmployees } from "../data.js";
+import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, listOfEmployees, invoices } from "../data.js";
 
-console.log('Reduce is alive');
+import { formatMonth } from "./helperFunctions.js";
 
 
 
@@ -14,7 +15,7 @@ export default async () => {
 
     /*    IMPORTANT !!  ⬅️⬅️⬅️⬅️⬅️⬅️⬅️
         
-        REMEMBER USE BRACKET [] NOTATION IN REDUCE -> example: object[property]
+        REMEMBER USE BRACKET [] NOTATION IN REDUCE -> example: acc[property]
         IT WILL BE BETTER THAN DOT NOTATION
     
     */
@@ -72,19 +73,30 @@ export default async () => {
 
 
 
+
+
+
+    ///////////////////////////// --- @s Reduce --- Reverses Array of Objects ( RETURNS ARRAY OF OBJECTS )
+
+
+
+
+    const reverseArrayOfObjects = arrayOfObjects.reduce((acc, currentItem) => [currentItem].concat(acc), [])
+
+
+
+
+
     ///////////////////////////// --- @s Reduce --- Adds up all numbers from --- Array --- ( RETURNS VALUE / NUMBER )
 
-    let addUpAllArrayNumbers = array.reduce((acc, number) => acc + (Number(number) || 0), 0);
-
+    const addUpAllArrayNumbers = array.reduce((acc, number) => acc + (Number(number) || 0), 0);
 
 
 
 
     ///////////////////////////// --- @s Reduce --- Adds up all numbers from --- Array Of Objects ---  ( RETURNS VALUE / NUMBER )
 
-    let addUpAllYears = pilots.reduce((acc, { years }) => acc + (isNaN(years) ? 0 : years), 0);
-
-
+    const addUpAllYears = pilots.reduce((acc, { years }) => acc + (isNaN(years) ? 0 : years), 0);
 
 
 
@@ -94,12 +106,12 @@ export default async () => {
 
     // Simple Using Filter
 
-    let doubledSimple = array.filter(Number).reduce((acc, number) => [...acc, number * 2], []);
+    const doubledSimple = array.filter(Number).reduce((acc, number) => [...acc, number * 2], []);
 
 
     // Long Using Filter
 
-    let doublePush = array.filter(Number).reduce((acc, number) => {
+    const doublePush = array.filter(Number).reduce((acc, number) => {
         acc.push(number * 2);
         return acc
     }, []);
@@ -110,7 +122,7 @@ export default async () => {
 
     // Without Filter Includes Zero
 
-    let doubleIncludeZeros = array.reduce((acc, number) => {
+    const doubleIncludeZeros = array.reduce((acc, number) => {
         if (typeof number === 'number' && !isNaN(number)) acc.push(number * 2)
         return acc
     }, [])
@@ -118,7 +130,7 @@ export default async () => {
 
 
     // Without Filter Removes Zero
-    let doubleRemoveZero = array.reduce((acc, number) => Number(number) ? acc.concat(number * 2) : acc, [])
+    const doubleRemoveZero = array.reduce((acc, number) => Number(number) ? acc.concat(number * 2) : acc, [])
 
 
 
@@ -131,12 +143,14 @@ export default async () => {
     // Shortest
 
 
-    let doubleYearsShortest = pilots.reduce((acc, pilot) =>
+    const doubleYearsShortest = pilots.reduce((acc, pilot) =>
         Number(pilot.years) ? acc.concat({ ...pilot, years: pilot.years * 2 }) : acc, []);
 
 
 
-    let doubledSimple3 = pilots.reduce((acc, pilot) => {
+
+
+    const doubledSimple3 = pilots.reduce((acc, pilot) => {
         if (typeof pilot.years === 'number' && !isNaN(pilot.years)) acc.push({ ...pilot, years: pilot.years * 2 })
         return acc
     }, [])
@@ -145,7 +159,7 @@ export default async () => {
 
     // Short
 
-    let doubleYearsShort =
+    const doubleYearsShort =
 
         pilots
             .filter(pilot => Number(pilot.years))
@@ -158,7 +172,7 @@ export default async () => {
 
     // Long
 
-    let doubleYearsLong =
+    const doubleYearsLong =
 
         pilots
             .filter(pilot => Number(pilot.years))
@@ -183,16 +197,16 @@ export default async () => {
     // Simple
 
 
-    let minNumSimple = array
+    const minNumSimple = array
         .filter(item => item === 0 || Number(item))
-        .reduce((acc, number) => acc < number ? acc : number, Infinity);
+        .reduce((acc, number) => acc > number ? number : acc, Infinity);
 
 
 
 
     // Long
 
-    let minNumLong = array
+    const minNumLong = array
         .filter(item => item === 0 || Number(item))
         .reduce((acc, number) => {
             if (acc > number) return number;
@@ -200,7 +214,7 @@ export default async () => {
         }, Infinity);
 
 
-    let minNumNoFilter = array.reduce((acc, number) => {
+    const minNumNoFilter = array.reduce((acc, number) => {
         if (typeof number === "number" && !isNaN(number)) {
             if (acc > number) return number
             else return acc
@@ -223,7 +237,7 @@ export default async () => {
 
     // Simple
 
-    let rookiePilot = pilots
+    const rookiePilot = pilots
         .filter(({ years }) => years === 0 || Number(years))
         .reduce((acc, pilot) => acc.years > pilot.years ? pilot : acc, { years: Infinity });
 
@@ -231,7 +245,7 @@ export default async () => {
 
     // Without Filter
 
-    let rookiePilotPerformance = pilots.reduce((acc, pilot) => {
+    const rookiePilotPerformance = pilots.reduce((acc, pilot) => {
 
         if ((pilot.years === 0 || Number(pilot.years)) && (!acc.years || acc.years > pilot.years)) return pilot;
         return acc;
@@ -249,7 +263,7 @@ export default async () => {
     // Simple
 
 
-    let expertPilot = pilots
+    const expertPilot = pilots
         .filter(({ years }) => Number(years))
         .reduce((acc, pilot) => acc.years < pilot.years ? pilot : acc, { years: 0 });
 
@@ -258,7 +272,7 @@ export default async () => {
     // Without Filter
 
 
-    let expertPilotPerformance = pilots.reduce((acc, pilot) => {
+    const expertPilotPerformance = pilots.reduce((acc, pilot) => {
 
         if (Number(pilot.years) && (!acc.years || acc.years < pilot.years)) return pilot;
         return acc;
@@ -286,14 +300,14 @@ export default async () => {
 
     ///////////////////////////   ---  @s Reduce --- Array to Object   --- ( RETURNS SINGLE OBJECT )
 
-    let arrayToObjectReduceToObject = array.reduce((acc, number) => ({ ...acc, [number]: number }), {})
+    const arrayToObjectReduceToObject = array.reduce((acc, number) => ({ ...acc, [number]: number }), {})
 
 
 
 
     /////////////////////////// ---  @s Reduce --- Convert Array to Array of Objects with default Key
 
-    let arrayToObjectReduceToArray = array.reduce((acc, number) => [...acc, { [number]: number }], []);
+    const arrayToObjectReduceToArray = array.reduce((acc, number) => [...acc, { [number]: number }], []);
 
 
 
@@ -304,7 +318,7 @@ export default async () => {
 
     // makes the first value the Key and the second key the new value And eliminates Duplicates
 
-    let arrayOfObjectsToSingleObject = arrayOfObjects.reduce((acc, { name, color }) => ({ ...acc, [name]: color }), {});
+    const arrayOfObjectsToSingleObject = arrayOfObjects.reduce((acc, { name, color }) => ({ ...acc, [name]: color }), {});
 
 
 
@@ -320,19 +334,15 @@ export default async () => {
 
 
 
-    let string = "⭕⭕⭕🚀🚀  less rockets, more bees"
+    const string = "⭕⭕⭕🚀🚀  less rockets, more bees"
 
-    let countRepetitionsInString = [...string].reduce((acc, letter) => {
+    const countRepetitionsInString = [...string].reduce((acc, letter) => {
 
-        // acc[letter] ? ++acc[letter] : (acc[letter] = 1) ->> THIS LINE COUNTS NULL AND UNDEFINED REPETITIONS
-
-        // if (letter) acc[letter] = ++acc[letter] || 1;
-
-        // if (letter) acc[letter] = (acc[letter] || 0) + 1
         if (letter) acc[letter] = acc[letter] + 1 || 1
         return acc
 
     }, {})
+
 
 
 
@@ -366,8 +376,7 @@ export default async () => {
     ];
 
 
-    let repetitions = fruitBasket.reduce((acc, fruit) => {
-
+    const repetitions = fruitBasket.reduce((acc, fruit) => {
 
         // acc[fruit] ? ++acc[fruit] : (acc[fruit] = 1) /* ->> THIS LINE COUNTS NULL AND UNDEFINED REPETITIONS */
         // if (fruit) acc[fruit] = ++acc[fruit] || 1
@@ -386,7 +395,7 @@ export default async () => {
     //  If Statement eliminates False Values ( RETURNS SINGLE OBJECT )
 
 
-    let pilotsByEyeColor = pilots.reduce((acc, { eyecolor }) => {
+    const pilotsByEyeColor = pilots.reduce((acc, { eyecolor }) => {
 
 
         // acc[eyecolor] ? ++acc[eyecolor] : (acc[eyecolor] = 1) /* ->> THIS LINE COUNTS NULL AND UNDEFINED REPETITIONS */
@@ -404,10 +413,10 @@ export default async () => {
 
     ///////////////////////////// ---  @s Reduce --- Remove Duplicates in --- Array
 
-    let arrayOfDuplicates = ["😀", "😀", "😀", "🌎", "🌎", "🚀"]
+    const arrayOfDuplicates = ["😀", "😀", "😀", "🌎", "🌎", "🚀"]
 
 
-    let removeDuplicatesArray = arrayOfDuplicates.reduce((acc, item) => {
+    const removeDuplicatesArray = arrayOfDuplicates.reduce((acc, item) => {
 
         if (!acc.includes(item)) acc.push(item)
         return acc
@@ -418,7 +427,7 @@ export default async () => {
 
     ///////////////////////////// ---  @s Reduce --- Remove Duplicates in --- Array of Objects --- with filter ( RETURNS ARRAY OF OBJECTS )
 
-    let messages = [
+    const messages = [
         {
 
             "timestamp": 1474328370007,
@@ -463,7 +472,7 @@ export default async () => {
 
     // Short Version With Some
 
-    let uniqueMessagesSome = messages.reduce((acc, message) => {
+    const uniqueMessagesSome = messages.reduce((acc, message) => {
 
         const duplicateMessage = acc.some(duplicate => duplicate.timestamp === message.timestamp);
 
@@ -477,7 +486,8 @@ export default async () => {
 
     // Short Version With Find ---  BEST OPTION ⬇️⬇️⬇️⬇️⬇️⬇️
 
-    let uniqueMessagesFind = messages.reduce((acc, message) => {
+    const uniqueMessagesFind = messages.reduce((acc, message) => {
+
 
         const duplicateMessage = acc.find(duplicate => duplicate.timestamp === message.timestamp);
 
@@ -490,9 +500,10 @@ export default async () => {
 
 
 
+
     // Long Version With Filter
 
-    let uniqueMessages2 = messages.reduce((acc, message) => {
+    const uniqueMessages2 = messages.reduce((acc, message) => {
 
 
         // DuplicateMessages is a combination of arrays 
@@ -523,7 +534,7 @@ export default async () => {
 
     // Short Version
 
-    let addSamePropertyToArrayOfObjectsSpread = arrayOfObjects.reduce((acc, pilot) => ([...acc, { ...pilot, "Key": "Value" }]), [])
+    const addSamePropertyToArrayOfObjectsSpread = arrayOfObjects.reduce((acc, pilot) => ([...acc, { ...pilot, "Key": "Value" }]), [])
 
 
 
@@ -531,7 +542,7 @@ export default async () => {
 
     // Long Version
 
-    let addSamePropertyToArrayOfObjectsPush = arrayOfObjects.reduce((acc, pilot) => {
+    const addSamePropertyToArrayOfObjectsPush = arrayOfObjects.reduce((acc, pilot) => {
 
         acc.push({ ...pilot, "Key": "Value" })
 
@@ -544,7 +555,7 @@ export default async () => {
     // If Version ---    If the Items Does not exist it wont be returned in the new Array Of Objects
 
 
-    let addSamePropertyToArrayOfObjectsEliminatignFalseAndNonNumericals = pilots.reduce((acc, pilot) => {
+    const addSamePropertyToArrayOfObjectsEliminatignFalseAndNonNumericals = pilots.reduce((acc, pilot) => {
 
 
         const { years } = pilot
@@ -565,18 +576,18 @@ export default async () => {
 
 
 
-    let addConditionalPropertyToArrayOfObjectsSpread = pilots.reduce((acc, pilot) => {
+    const addConditionalPropertyToArrayOfObjectsSpread = pilots.reduce((acc, pilot) => {
 
         const { years } = pilot
 
-        let object = { ...pilot, level: !isNaN(years) ? years > 20 ? 'pro' : 'rookie' : 'No Level' }
+        const object = { ...pilot, level: !isNaN(years) ? years > 20 ? 'pro' : 'rookie' : 'No Level' }
 
         return [...acc, object]
     }, [])
 
 
 
-    let addConditionalPropertyToArrayOfObjectsPush = pilots.reduce((acc, pilot) => {
+    const addConditionalPropertyToArrayOfObjectsPush = pilots.reduce((acc, pilot) => {
 
         const { years } = pilot
 
@@ -592,7 +603,7 @@ export default async () => {
 
 
 
-    let addConditionalPropertyToArrayOfObjectsEliminatignFalseAndNonNumericals = pilots.reduce((acc, pilot) => {
+    const addConditionalPropertyToArrayOfObjectsEliminatignFalseAndNonNumericals = pilots.reduce((acc, pilot) => {
 
         const { years } = pilot
 
@@ -604,9 +615,9 @@ export default async () => {
 
 
 
-    /////////////////////////////////////////////////////                                   /////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////// ---- @s REDUCE WITH ...REST  ----  /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////                                   /////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////                                    /////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////  ---- @s REDUCE WITH ...REST  ---- /////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////                                    /////////////////////////////////////////////////////
 
 
 
@@ -615,14 +626,14 @@ export default async () => {
 
     // Short
 
-    let nestedSingleObjectFromArrayOfObjectsShort = pilots.reduce((acc, { name, ...rest }) => ({ ...acc, [name]: rest }), {}) // RETURNS  SINGLE OBJECT
+    const nestedSingleObjectFromArrayOfObjectsShort = pilots.reduce((acc, { name, ...rest }) => ({ ...acc, [name]: rest }), {}) // RETURNS  SINGLE OBJECT
 
 
 
 
     // Long
 
-    let nestedSingleObjectFromArrayOfObjectsLong = pilots.reduce((acc, pilot) => {
+    const nestedSingleObjectFromArrayOfObjectsLong = pilots.reduce((acc, pilot) => {
 
         const { name, ...rest } = pilot
 
@@ -647,13 +658,13 @@ export default async () => {
 
     // Short
 
-    let nestedArrayOfObjectsFromArrayOfObjectsShort = pilots.reduce((acc, { name, ...rest }) => ([...acc, { [name]: rest }]), [])  // RETUNRS ARRAY OF OBJECTS
+    const nestedArrayOfObjectsFromArrayOfObjectsShort = pilots.reduce((acc, { name, ...rest }) => ([...acc, { [name]: rest }]), [])  // RETUNRS ARRAY OF OBJECTS
 
 
 
     // Long
 
-    let nestedArrayOfObjectsFromArrayOfObjectsLong = pilots.reduce((acc, pilot) => {
+    const nestedArrayOfObjectsFromArrayOfObjectsLong = pilots.reduce((acc, pilot) => {
 
         const { name, ...rest } = pilot
 
@@ -665,7 +676,7 @@ export default async () => {
 
     // With Push and Conditional
 
-    let nestedArrayOfObjectsFromArrayOfObjectsPush = pilots.reduce((acc, pilot) => {
+    const nestedArrayOfObjectsFromArrayOfObjectsPush = pilots.reduce((acc, pilot) => {
 
         const { name, ...rest } = pilot
         if (name) acc.push({ [name]: rest })
@@ -678,9 +689,118 @@ export default async () => {
 
 
 
-    /////////////////////////////////////////////////////                         /////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////// ---- @s GROUP BY   ---- /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////                         /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                           /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP BY INVOICES BY MONTH   ---- /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                           /////////////////////////////////////////////////////
+
+
+
+    //////////////////// RETURNS OBJECTS
+
+
+    const groupedInvoicesByMonthToObject = invoices.reduce((acc, invoice) => {
+        const dateCreated = invoice.dateCreated;
+        const [year, month] = dateCreated.split('-');
+        const monthKey = formatMonth(`${year}-${month.padStart(2, '0')}`);
+
+        // Verify if the Acc Object Contains the INVOICE VALUE we are iterating, 
+        // If it DOES NOT contain the Property Value 
+        // initiate the Acc Object 
+
+
+        if (!acc[monthKey]) {
+            acc[monthKey] = {
+                totalSales: 0,
+                totalCosts: 0,
+                totalProfits: 0,
+                totalStateTaxes: 0,
+                totalSurTaxes: 0,
+                totalInvoices: 0,
+            };
+        }
+
+        acc[monthKey].totalSales += invoice.subTotal;
+        acc[monthKey].totalCosts += invoice.cost;
+        acc[monthKey].totalProfits += invoice.profit;
+        acc[monthKey].totalStateTaxes += invoice.stateTax;
+        acc[monthKey].totalSurTaxes += invoice.surTax;
+        acc[monthKey].totalInvoices++;
+
+        return acc;
+
+    }, {});
+
+    // Transform the groupedInvoicesByMonth object into an array of objects
+    const months = Object.entries(groupedInvoicesByMonthToObject).map(([month, totals]) => ({ month, ...totals, }));
+
+
+
+
+    //////////////////// RETURNS ARRAY OF OBJECTS
+
+
+
+    const groupedInvoicesByMonthToArrayOfObjects = invoices.reduce((acc, invoice) => {
+        const dateCreated = invoice.dateCreated;
+        const [year, month] = dateCreated.split('-');
+        const monthKey = formatMonth(`${year}-${month.padStart(2, '0')}`);
+
+
+        // Verify if the Acc has already a property with the value we are iterating ⬇️⬇️⬇️
+
+        const existingMonth = acc.find(item => item.month === monthKey);
+
+        // If it the INVOICE VALUE we are iterating ALREADY EXISTS in the Acc 
+        // Then modify the existing value as you wish
+
+        if (existingMonth) {
+            existingMonth.totalSales += invoice.subTotal;
+            existingMonth.totalCosts += invoice.cost;
+            existingMonth.totalProfits += invoice.profit;
+            existingMonth.totalStateTaxes += invoice.stateTax;
+            existingMonth.totalSurTaxes += invoice.surTax;
+            existingMonth.totalInvoices++;
+        }
+
+        // If it the INVOICE VALUE we are iterating DOES NOT EXISTS
+        // Then push the INVOICE object to the Acc Array
+
+
+        else {
+
+
+            acc.push({
+                month: monthKey,
+                totalSales: invoice.subTotal,
+                totalCosts: invoice.cost,
+                totalProfits: invoice.profit,
+                totalStateTaxes: invoice.stateTax,
+                totalSurTaxes: invoice.surTax,
+                totalInvoices: 1,
+            });
+        }
+
+        return acc;
+    }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////                                         /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP BY FRUITS CATEGORY   ---- /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                         /////////////////////////////////////////////////////
 
 
 
@@ -704,22 +824,24 @@ export default async () => {
 
 
 
-
+    // REMEMBER ---> THE ELSE STATEMENT ALWAYS OCCURS FIRST
 
 
 
     // Group To Object
 
-    let groupByCategoryToObject = fruits.reduce((acc, person) => {
+    const groupByCategoryToObject = fruits.reduce((acc, fruit) => {
 
-        // Or Use ----->>>> const { points, ...person } = person
+        // Or Use ----->>>> const { points, ...fruit } = fruit
 
-        const { category } = person
+        const { category } = fruit
 
 
         if (category) {
             acc[category] = acc[category] || []
-            acc[category].push(person); //---------->  Or "person.name" to only have an array of names 
+            acc[category].push(fruit); //---------->  Or "fruit.name" to only have an array of names 
+
+            // You Can Also Shorten it down to -> (acc[category] = acc[category] || []).push(fruit)
         }
         return acc;
 
@@ -732,36 +854,84 @@ export default async () => {
 
 
 
-    let groupByCategoryToArrayOfObjects1 = fruits.reduce((acc, { category, ...rest }) => {
+    const groupByCategoryToArrayOfObjects1 = fruits.reduce((acc, { category, ...rest }) => {
 
-        const existingCategory = acc.find(item => item[category]);
+
+        /*    EXPLANATION  
+
+        Use  ---> fruit[categorty] because the acc has the name of the category as property
+                 
+        Example: 
+        
+            acc = {
+                 
+                 Vegetables: [ 
+                        { name: 'Apple', category: 'Fruits' },
+                        { name: 'Banana', category: 'Fruits' }
+                    ] 
+
+                } 
+
+         */
+
+
+        const existingCategory = acc.find(fruit => fruit[category]);
 
         if (existingCategory) existingCategory[category].push(rest);
         else acc.push({ [category]: [rest] });
 
-
         return acc;
+
     }, []);
+
+
 
     // console.log(...groupByCategoryToArrayOfObjects1);
 
 
 
+    const groupByCategoryToArrayOfObjects2 = fruits.reduce((acc, { name, category }) => {
 
-    let groupByCategoryToArrayOfObjects2 = fruits.reduce((acc, { name, category }) => {
+        /*  EXPLANATION
 
-        const existingCategory = acc.find(item => item.category === category);
+            Use  ---> fruit.category === category because the acc property it --> category:
+         
+                Example: 
+ 
+                acc = {
+                    category: 'Fruits',
+                    fruitNames: [
+                        { name: 'Apple' },
+                        { name: 'Banana' },
+                        { name: 'Orange' },
+                        { name: 'Grapes' },
+                        { name: 'Pineapple' },
+                        { name: 'Watermelon' }
+                    ]
+                }
 
-        if (existingCategory) existingCategory.names.push({ name });
-        else acc.push({ category, names: [{ name }] });
+        */
+
+        const existingCategory = acc.find(fruit => fruit.category === category);
+
+        if (existingCategory) existingCategory.fruitNames.push({ name });
+        else acc.push({ category, fruitNames: [{ name }] });
 
         return acc;
     }, []);
 
 
-
-
     // console.log(...groupByCategoryToArrayOfObjects2);
+
+
+
+
+
+    /////////////////////////////////////////////////////                                      /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP BY TRANSACTIONS   ---- /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                      /////////////////////////////////////////////////////
+
+
 
 
 
@@ -772,24 +942,149 @@ export default async () => {
 
 
     const buyers = [
-        { amount: 300, date: "2020-05", user: "Juan Del Pueblo" },
-        { amount: 252, date: "2020-04", user: "Bill Gates" },
-        { amount: 700, date: "2020-04", user: "Jon Jones" },
-        { amount: 700, date: "2020-05", user: "Jon Jones" },
-        { amount: 5000.25, date: "2020-05", user: "Bill Gates" },
-        { user: "Pedro" },
+        { amount: 300, date: "2020-05", name: "Juan Del Pueblo" },
+        { amount: 233, date: "2020-09", name: "Juan Del Pueblo" },
+        { amount: 252, date: "2020-04", name: "Bill Gates" },
+        { amount: 700, date: "2020-04", name: "Jon Jones" },
+        { amount: 700, date: "2020-05", name: "Jon Jones" },
+        { amount: 5000.25, date: "2020-05", name: "Bill Gates" },
+        { name: "Pedro" },
     ];
 
 
 
+    ////////////////////////////////////////////// RETURNS OBJECT 2 VERSIONS -> CONCAT & PUSH
 
-    const buyersWithTransactionsMap = buyers.reduce((acc, { user, date, amount }) => {
+
+    const buyersWithTransactionsToObject1 = buyers.reduce((acc, buyer) => {
+
+        const { name } = buyer
+        acc[name] = acc[name] || []
+        acc[name] = acc[name].concat(buyer)
+
+
+        return acc
+
+    }, {})
+
+
+    const buyersWithTransactionsToObject2 = buyers.reduce((acc, buyer) => {
+
+        const { name } = buyer
+        acc[name] = acc[name] || []
+        acc[name].push(buyer)
+
+
+        return acc
+
+    }, {})
+
+
+    ////////////////////////////////////////////// RETURNS ARRAY OF OBJECTS ( USES EXISTING VALUE [NAME] AS A PROPERTY )
+
+
+    const buyersWithTransactionsToArray1 = buyers.reduce((acc, buyer) => {
+
+        const { name } = buyer;
+
+        const existingNameInAcc = acc.find(buyer => buyer[name])
+
+        if (existingNameInAcc) existingNameInAcc[name].push(buyer)
+        else acc.push({ [name]: [buyer] })
+
+        return acc
+
+    }, [])
+
+
+
+
+    const buyersWithTransactionsToArray2 = buyers.reduce((acc, buyerIterated) => {
+
+        const { name, ...rest } = buyerIterated
+
+        const existingNameInAcc = acc.find(buyer => buyer[name]);
+
+
+        if (existingNameInAcc) existingNameInAcc[name].push(rest);
+        else acc.push({ [name]: [rest] });
+
+
+        return acc;
+
+    }, []);
+
+
+
+
+
+    const buyersWithTransactionsToArray3 = buyers
+        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
+        .reduce((acc, { name, ...rest }) => {
+
+            const existingNameInAcc = acc.find(buyer => buyer[name]);
+
+            if (existingNameInAcc) existingNameInAcc[name].push(rest);
+            else acc.push({ [name]: [rest] });
+
+            return acc;
+
+        }, []);
+
+
+    ////////////////////////////////////////////// RETURNS ARRAY OF OBJECTS ( CREATES NEW PROPERTY -> TRANSACTIONS: )
+
+
+    const buyersWithTransactions2 = buyers
+        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
+        .reduce((acc, { name, ...rest }) => {
+
+            const existingNameInAcc = acc.find(buyer => buyer.name === name);
+
+            if (existingNameInAcc) existingNameInAcc.transactions.push(rest);
+            else acc.push({ name, transactions: [rest] });
+
+            return acc;
+
+        }, []);
+
+
+
+    const buyersWithTransactions3 = buyers
+        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
+        .reduce((acc, { name, amount, ...rest }) => {
+
+            const existingNameInAcc = acc.find(buyer => buyer.name === name);
+
+
+            if (existingNameInAcc) {
+                existingNameInAcc.totalTransactions += amount; // Add the amount to the existing total
+                existingNameInAcc.transactions.push({ amount, ...rest });
+            } else {
+                acc.push({
+                    name,
+                    totalTransactions: amount, // Initialize totalTransactions for new user
+                    transactions: [{ amount, ...rest }],
+                });
+            }
+            return acc;
+
+        }, []);
+
+
+
+
+
+    //////////////////////////////////////////////////////// ---------------->>> OTHER WAYS TO DO IT
+
+
+    const buyersWithTransactionsMap = buyers.reduce((acc, { name, date, amount }) => {
 
         if (date && amount) {
 
-            if (acc.has(user)) acc.get(user).transaction.push({ amount, date });
+            if (acc.has(name)) acc.get(name).transaction.push({ amount, date });
 
-            else acc.set(user, { user, transaction: [{ amount, date }] });
+            else acc.set(name, { name, transaction: [{ amount, date }] });
 
         }
 
@@ -805,100 +1100,28 @@ export default async () => {
 
 
 
+    let emptyArray = [];
 
-
-    const buyersWithTransactions = [];
 
     for (const buyer of buyers) {
 
-        const { user, date, amount, ...rest } = buyer
+        const { name, date, amount, ...rest } = buyer
 
 
         if (date && amount) {
 
-            const duplicateUser = buyersWithTransactions.find(item => item[user]);
-            if (duplicateUser) duplicateUser[user].push({ date, amount, ...rest });
-            else buyersWithTransactions.push({ [user]: [{ date, amount, ...rest }] });
-        }
+            const existingNameInAcc = emptyArray.find(buyer => buyer[name]);
 
+            if (existingNameInAcc) existingNameInAcc[name].push({ date, amount, ...rest });
+            else emptyArray.push({ [name]: [{ date, amount, ...rest }] });
+        }
     }
 
 
 
-    const buyersWithTransactions0 = buyers
-
-        .reduce((emptyArray, userIterated) => {
-
-            let { user, ...rest } = userIterated
-
-            const duplicatedUserInEmptyArray = emptyArray.find(item => item[user]);
-
-            if (duplicatedUserInEmptyArray) duplicatedUserInEmptyArray[user].push(rest);
-            else emptyArray.push({ [user]: [rest] });
-
-            return emptyArray;
-
-        }, []);
-
-
-
-
-    const buyersWithTransactions1 = buyers
-        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
-        .reduce((acc, { user, ...rest }) => {
-
-            const duplicateUser = acc.find(item => item[user]);
-
-            if (duplicateUser) duplicateUser[user].push(rest);
-            else acc.push({ [user]: [rest] });
-
-            return acc;
-
-        }, []);
-
-
-
-
-
-    const buyersWithTransactions2 = buyers
-        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
-        .reduce((acc, { user, ...rest }) => {
-
-            const duplicateUser = acc.find(item => item.user === user);
-
-
-            if (duplicateUser) duplicateUser.transactions.push(rest);
-            else acc.push({ user, transactions: [rest] });
-
-            return acc;
-
-        }, []);
-
-
-
-
-
-    const buyersWithTransactions3 = buyers
-        .filter(({ date, amount }) => date && amount) // Filter out buyers without transactions
-        .reduce((acc, { user, amount, ...rest }) => {
-
-            const duplicateUser = acc.find(item => item.user === user);
-
-
-            if (duplicateUser) {
-                duplicateUser.totalTransactions += amount; // Add the amount to the existing total
-                duplicateUser.transactions.push({ amount, ...rest });
-            } else {
-                acc.push({
-                    user,
-                    totalTransactions: amount, // Initialize totalTransactions for new user
-                    transactions: [{ amount, ...rest }],
-                });
-            }
-            return acc;
-
-        }, []);
-
+    /////////////////////////////////////////////////////                                      /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// ---- @s GROUP BY PADDOCK TYPE   ---- /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                      /////////////////////////////////////////////////////
 
 
 
@@ -939,7 +1162,7 @@ export default async () => {
 
     const groupedByType1 = paddocksWithCategory.reduce((acc, { type, ...rest }) => {
 
-        const existingGroup = acc.find(item => item[type]);
+        const existingGroup = acc.find(paddock => paddock[type]);
 
         if (existingGroup) existingGroup[type].push(rest);
         else acc.push({ [type]: [rest] });
@@ -954,7 +1177,7 @@ export default async () => {
 
     const groupedByType2 = paddocksWithCategory.reduce((acc, { type, ...rest }) => {
 
-        const existingType = acc.find(item => item.type === type);
+        const existingType = acc.find(paddock => paddock.type === type);
 
         if (existingType) existingType.listOfPaddocks.push(rest);
         else acc.push({ type, listOfPaddocks: [rest] });
@@ -970,9 +1193,9 @@ export default async () => {
 
 
 
-    /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////  ---- @s JOIN   ----  /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////                       /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////  ---- @s JOIN 2 ARRAYS   ----  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////                                /////////////////////////////////////////////////////
 
 
 
@@ -1016,14 +1239,14 @@ export default async () => {
 
 
 
-    let groupArraysOfObjectsByID = paddockType.reduce((acc, item) => {
+    const groupArraysOfObjectsByID = paddockType.reduce((acc, paddockType) => {
 
         // give an Array of all paddocks with the same ID we are iterating ⬇⬇⬇⬇⬇⬇⬇⬇
-        let listOfPaddocks = paddocks.filter(paddock => paddock.id === item.id)
+        const listOfPaddocksWithSameID = paddocks.filter(paddock => paddock.id === paddockType.id)
 
-        let totalArea = listOfPaddocks.reduce((acc, { area }) => acc + area, 0)
+        const totalArea = listOfPaddocksWithSameID.reduce((acc, { area }) => acc + area, 0)
 
-        if (listOfPaddocks) acc.push({ ...item, totalArea, listOfPaddocks })
+        if (listOfPaddocksWithSameID) acc.push({ ...paddockType, totalArea, listOfPaddocksWithSameID })
 
 
         return acc
@@ -1038,7 +1261,7 @@ export default async () => {
 
     /*     // ///////////////////////  Reduce + Map
     
-        let reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
+        const reduceArrayToObject = paddocks.reduce((acc, { id, area }) => {
     
             if (id) acc[id] = acc[id] || 0
             acc[id] = acc[id] + area
@@ -1052,7 +1275,7 @@ export default async () => {
     
         console.log(reduceArrayToObject);
     
-        let sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
+        const sumsEachTreeArea = paddockType.map(item => ({ ...item, total: reduceArrayToObject[item.id] }))
     
     
     
@@ -1141,7 +1364,7 @@ export default async () => {
     }
 
 
-    let charactersRangeAndDamageRate = characters.reduce((acc, character) => {
+    const charactersRangeAndDamageRate = characters.reduce((acc, character) => {
         // Starting value
         const { name } = character
         acc[name] = { damage: 0, range: 0 }
@@ -1192,7 +1415,8 @@ export default async () => {
 
 
 
-    let groupBehaviour = climateBehaviours.reduce((acc, behaviour) => {
+    const groupBehaviour = climateBehaviours.reduce((acc, behaviour) => {
+
 
         if (behaviour.greenPoints >= 0) acc.goodClimateBehaviours.push(behaviour)
         else acc.badClimateBehaviours.push(behaviour)
@@ -1212,7 +1436,7 @@ export default async () => {
 
     ///////////////////////////// --- @s Reduce ---  Add up prices In Cart --- Array Of Objects --- ( RETURNS SINGLE OBJECT )
 
-    let cart = [
+    const cart = [
 
         {
             title: 'Samsung Galaxy S7',
@@ -1239,7 +1463,7 @@ export default async () => {
 
     // FIRST VERSION
 
-    let total = cart.reduce((acc, { amount, price }) => {
+    const total = cart.reduce((acc, { amount, price }) => {
 
         acc.totalItems += amount
         acc.cartTotal += amount * price
@@ -1259,12 +1483,17 @@ export default async () => {
 
     // SECOND VERSION
 
-    let total2 = cart.reduce(({ totalItems, cartTotal }, { amount, price }) => {
+    const total2 = cart.reduce(({ totalItems, cartTotal }, { amount, price }) => {
         return {
             totalItems: totalItems + amount,
             cartTotal: cartTotal + amount * price
         };
-    }, { totalItems: 0, cartTotal: 0 });
+
+    }, {
+        totalItems: 0,
+        cartTotal: 0
+    }
+    );
 
 
     // console.log(total2);
@@ -1280,7 +1509,7 @@ export default async () => {
 
 
 
-    let fetchRepos = async () => {
+    const fetchRepos = async () => {
 
         const response = await fetch('https://api.github.com/users/john-smilga/repos?per_page=100')
         const data = await response.json()
@@ -1303,7 +1532,7 @@ export default async () => {
 
 
 
-    let getdata = async () => {
+    const getdata = async () => {
 
 
         const response = await fetch("https://www.signazon.com/designerservice/service.asmx/GetModels?ID=7&Year=2018&fbclid=IwAR0OuzaqUNS6k7SOUjhPt0sQR_QNLl0XdoSqPZAYl84FBcppyi1dIFosKqk", {

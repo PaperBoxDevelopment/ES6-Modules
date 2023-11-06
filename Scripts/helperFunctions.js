@@ -1,6 +1,28 @@
 import colors from "colors";
 
 
+const dateOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'America/New_York' // Change to Orlando, Florida time zone
+};
+export const timeOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: 'America/New_York' // Change to Orlando, Florida time zone
+};
+
+const midNightTime = "T12:00:00"
+
+
+
+export let formatDate = date => new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(date + midNightTime))
+
+export let formatMonth = month => new Intl.DateTimeFormat('en-US', { month: "long", year: "numeric" }).format(new Date(month + midNightTime))
+
+
+
 ///////////////////////////    All Variable Info     ///////////////////////////
 
 export let info = variable => {
@@ -150,6 +172,9 @@ export let roundToDecimalPlaces = (num, decimalPlaces = 2) => {
     const rounded = Math.round((parsedNum + 0.00001) * factor) / factor;
     return rounded;
 }
+
+
+
 
 
 

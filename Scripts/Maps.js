@@ -1,5 +1,5 @@
 
-import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph } from "../data.js";
+import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parragraph, dieList } from "../data.js";
 
 export default () => {
 
@@ -12,7 +12,7 @@ export default () => {
 
 
 
-    let basicMap = array => array.map((value, index, arr) => index)
+    const basicMap = array => array.map((value, index, arr) => index)
 
 
 
@@ -22,9 +22,9 @@ export default () => {
 
     ///////////////////////////   @s Map ---  Convert Array to Array of Objects with default Key
 
-    let arrayToArrayOfObjects = array => array.map(id => ({ id }));                // Here you Make the Argument the Default Key
-    let arrayToArrayOfObjects2 = array => array.map(element => ({ key: element }));
-    let arrayToArrayOfObjects3 = (array, key) => array.map(element => ({ [key]: element })) // Here you Create the Default ID and Use the Argument as .Values
+    const arrayToArrayOfObjects = array => array.map(id => ({ id }));                // Here you Make the Argument the Default Key
+    const arrayToArrayOfObjects2 = array => array.map(element => ({ key: element }));
+    const arrayToArrayOfObjects3 = (array, key) => array.map(element => ({ [key]: element })) // Here you Create the Default ID and Use the Argument as .Values
 
 
 
@@ -37,7 +37,7 @@ export default () => {
     ///////////////////////////   @s Map --- Adds Empty Array or Object or Calculation  to Each Object in Array of Objects
 
 
-    let addEmptyArrayToEachObjectInArrayOfObjects = (arrayOfObjects, key) => arrayOfObjects.map(v => ({ ...v, [key]: [] }))
+    const addEmptyArrayToEachObjectInArrayOfObjects = (arrayOfObjects, key) => arrayOfObjects.map(v => ({ ...v, [key]: [] }))
     // console.log(addEmptyArrayToEachObjectInArrayOfObjects(arrayOfObjects, 'EmptyArray'));
 
 
@@ -60,7 +60,7 @@ export default () => {
     ];
 
 
-    let halfPriceItem = (arrayOfObjects, key, value) =>
+    const halfPriceItem = (arrayOfObjects, key, value) =>
 
         arrayOfObjects
             .filter(item => !isNaN(item.price))
@@ -81,7 +81,7 @@ export default () => {
 
     /////////////////////////// @s Map --- Modify Array Of Objects and Add Conditional Properties
 
-    let expertPilots = pilots.filter(item => !isNaN(item.years)).map(pilot => ({ ...pilot, level: pilot.years > 20 ? 'pro' : 'rookie' }))
+    const expertPilots = pilots.filter(item => !isNaN(item.years)).map(pilot => ({ ...pilot, level: pilot.years > 20 ? 'pro' : 'rookie' }))
 
 
 
@@ -114,9 +114,9 @@ export default () => {
     ]
 
 
-    let findCentro = objArr.map(centro => centro.centroActividad);
-    let flater = findCentro.flat(Infinity)
-    let filtered = flater.filter(item => item.title === 504)
+    const findCentro = objArr.map(centro => centro.centroActividad);
+    const flater = findCentro.flat(Infinity)
+    const filtered = flater.filter(item => item.title === 504)
     // console.log(objArr[0].id);
     // console.log(flater);
     // console.log(filtered);
@@ -137,7 +137,7 @@ export default () => {
         { id: 2445532, name: 'nat' },
         { id: 26478, name: 'ceci' }
     ];
-    let getValuesByKey = (arrayOfObjects, key) => arrayOfObjects.map(item => ({ name: item[key] }))
+    const getValuesByKey = (arrayOfObjects, key) => arrayOfObjects.map(item => ({ name: item[key] }))
 
     // console.log(getValuesByKey(customers, 'name'));
 
@@ -229,13 +229,46 @@ export default () => {
 
     }
 
-    let centsToWords = centsInString.map(item => ({ ...item, Fraccion: fractions[item.id] }))
-
-
-
-
+    const centsToWords = centsInString.map(item => ({ ...item, Fraccion: fractions[item.id] }))
 
     // console.log(centsToWords);
+
+
+
+
+    /////////////////////////// @s Map --- Modify Die List --- ( RETURNS ARRAY OF OBJECTS )
+
+
+    // Use map to create a new array with modified structure
+    const modifiedDieList = dieList.map(item => {
+
+
+        const aroundAndAcross = item["AROUND AND ACROSS"].split(" / ");
+        const gaps = item["GAPS"].split(" / ");
+
+        const impositionValue = item["IMPOSITION"].replace(" up", "");
+        const sizeValue = `${item["WIDTH"]} x ${item["LENGTH"]}`;
+
+
+        return {
+            "SIZE": sizeValue,
+            "WIDTH": item["WIDTH"],
+            "LENGTH": item["LENGTH"],
+            "PLATES": item["PLATES"],
+            "UP": Number(impositionValue),
+            "AROUND": parseInt(aroundAndAcross[0]),
+            "ACROSS": parseInt(aroundAndAcross[1]),
+            "GAPSAROUND": parseFloat(gaps[1]),
+            "GAPSACROSS": parseFloat(gaps[0]),
+            "DESCRIPTION": item["DESCRIPTION"],
+            "NOTES": item["NOTES"],
+        };
+    });
+
+    // console.log(modifiedDieList);
+
+
+
 }
 
 

@@ -6,37 +6,38 @@ export default () => {
 
 
 
+    
+
     ///////////////////////////   @s Objects Methods
 
     /*
 
-    Object.create()
-    Object.defineProperties()
-    Object.defineProperty()
-    Object.entries()
-    Object.freeze()
-    Object.fromEntries()
-    Object.getOwnPropertyDescriptor()
-    Object.getOwnPropertyDescriptors()
-    Object.getOwnPropertyNames()
-    Object.getOwnPropertySymbols()
-    Object.getPrototypeOf()
-    Object.hasOwn()
-    Object.prototype.hasOwnProperty()
-    Object.is()
-    Object.isExtensible()
-    Object.isFrozen()
-    Object.prototype.isPrototypeOf()
-    Object.isSealed()
-    Object.keys()
-    Object.preventExtensions()
-    Object.prototype.propertyIsEnumerable()
-    Object.seal()
-    Object.setPrototypeOf()
-    Object.prototype.toLocaleString()
-    Object.prototype.toString()
-    Object.prototype.valueOf()
-    Object.values() 
+Object.keys()
+Object.values()
+Object.entries()
+Object.create()
+Object.freeze()
+Object.defineProperty()
+Object.defineProperties()
+Object.getOwnPropertyDescriptor()
+Object.getOwnPropertyDescriptors()
+Object.getPrototypeOf()
+Object.preventExtensions()
+Object.seal()
+Object.is()
+Object.isExtensible()
+Object.isFrozen()
+Object.getOwnPropertyNames()
+Object.getOwnPropertySymbols()
+Object.setPrototypeOf()
+Object.fromEntries() 
+Object.prototype.toString()
+Object.prototype.toLocaleString()
+Object.prototype.valueOf()
+Object.prototype.hasOwnProperty()
+Object.prototype.isPrototypeOf()
+Object.prototype.propertyIsEnumerable()
+Object.hasOwn()
     
     */
 

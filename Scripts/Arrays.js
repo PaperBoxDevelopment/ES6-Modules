@@ -7,29 +7,24 @@ import { data, array, arrayOfNumbers, object, user, arrayOfObjects, pilots, parr
 export default () => {
 
 
-    
 
-
+ 
     ///////////////////////////////// @s Array Methods
 
 
 
-
-
     /*
-
-
 
       
 
     1. Array Modification Methods:
         --- These methods MODIFY the original array
 
-        push()       Adds one or more elements to the end of an array and returns the new length of the array.
-        pop()        Removes the last element from an array and returns it.
-        shift()      Removes the first element from an array and returns it.
-        unshift()    Adds one or more elements to the beginning of an array and returns the new length of the array.
+        push()       Adds one or more elements to the --> END... of an array and returns the new length of the array.
+        unshift()    Adds one or more elements to the --> BEGGINING ... of an array and returns the new length of the array.
         splice()     Adds, removes, or replaces elements in an array.
+        pop()        REMOVES the --> LAST... element from an array and returns it.
+        shift()      REMOVES the --> FIRST ... element from an array and returns it.
         copyWithin() Copies all or part of an array into another array, starting at a specified index.
         fill()       Sets all or part of an array to a specified value.
 
@@ -48,13 +43,13 @@ export default () => {
         ---These methods access elements or information from the array without modifying it.
 
         length()         Returns the number of elements in the array.
-        concat()         Combines two or more arrays into a new array.
         includes()       Returns true if an array contains a specified value, and false if it does not.
         at()             Takes an integer value and returns the item at that index
         indexOf()        Returns the index of the first occurrence of a specified value in an array, or -1 if the value is not found.
-        join()           Converts an array to a string by joining the elements with a specified separator.
         lastIndexOf()    Returns the index of the last occurrence of a specified value in an array, or -1 if the value is not found.
+        join()           Converts an array to a string by joining the elements with a specified separator.
         slice()          Creates a new array that contains a section of the original array.
+        concat()         Combines two or more arrays into a new array.
         toString()       Converts an array to a string by joining the elements with a comma.
         entries()        Returns an array of array-like objects, each of which contains the index and value of each element in the original array.
         toLocaleString() Converts an array to a string using the locale-specific conventions of the current browser.
@@ -80,8 +75,8 @@ export default () => {
     4. Array Searching Methods:
         ---These methods search for specific elements or conditions in the array.
 
-        find()          Find the first element in the array that satisfies a condition.
-        findIndex()     Find the index of the first element in the array that satisfies a condition.
+        find()          Returns the first element in the array that satisfies a condition.
+        findIndex()     Returns the index of the first element in the array that satisfies a condition.
         findLast()      Iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function.
         findLastIndex() Iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function.
 
@@ -129,7 +124,7 @@ export default () => {
     It does not modify the original array and does not return a new array.
 
     
-    --- It's worth noting that while the above methods typically behave as described, 
+    --- It's worth nothing that while the above methods typically behave as described, 
     some of them can be used in ways that modify the original array or return a new array depending on how they are used. 
     For example, Array.splice() can be used to modify an array in place, and Array.slice() can be used to create a new array.
 
@@ -140,14 +135,11 @@ export default () => {
 
 
 
-
     ///////////////////////////  ---  @s Reduce --- Find Last Object in Array of Objects 
 
-    function findLastObjectInArrayOfObjects(arrayOfObjects) {
-        return arrayOfObjects.pop();
-    }
 
 
+    let findLastObject =  arrayOfObjects =>  arrayOfObjects.pop()
 
 
     ///////////////////////////   @s Create Array Of a #### Numbers
@@ -235,9 +227,9 @@ export default () => {
 
 
     let filterFalseValues = array => array.filter(Boolean)
-    
-    
-    
+
+
+
 
 
     ///////////////////////////   @s Every   

@@ -81,8 +81,6 @@ export default () => {
 
 
 
-
-
     array.forEach((value, index, arr) => {
         // console.log("value: " + value + " at index: " + index + " in the array: " + arr);
         // --- returns a function
@@ -156,6 +154,7 @@ export default () => {
 
     // Frist Options By Loops
 
+    
     function numberOfArrayOfObjectsTrueValues(arrayOfObjects, key) {
         let counter = 0;
         for (let index = 0; index < arrayOfObjects.length; index++) {
